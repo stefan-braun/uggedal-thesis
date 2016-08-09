@@ -1,0 +1,443 @@
+%!TEX options = --shell-escape
+%!TEX program = lualatex
+\documentclass[12pt,%
+               %draft,%
+               oneside,
+               a4paper]{uiothesis}
+\usepackage[ngerman]{babel}
+\author{Stefan Braun}
+\addbibresource{references_seminar.bib}
+
+\setlength{\emergencystretch}{1em}
+\setmonofont{Hack}
+\usepackage{color,xcolor}
+\definecolor{listingbackground}{HTML}{F4F4F4}
+\usepackage{caption}
+\usepackage[newfloat]{minted}
+\setminted{tabsize=4}
+\setminted{obeytabs}
+\setminted{linenos}
+\setminted{fontsize=\footnotesize}
+\setminted{bgcolor=listingbackground}
+\setmintedinline{breaklines}
+\setmintedinline{bgcolor={}}
+\setminted{frame=lines, framesep=\fboxsep, rulecolor=\color{gray!40}}
+\definecolor{dhscodebg}{rgb}{0.97,0.97,0.97}
+
+\setminted{bgcolor=dhscodebg}
+
+
+\usepackage{csquotes}
+\usepackage{graphicx}
+\def\pgfsysdriver{pgfsys-pdftex.def} %for texlive 2016
+\usepackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows}
+\usetikzlibrary{calc}
+\usetikzlibrary{shadows.blur}
+\usepackage{tikz-3dplot}
+\definecolor{Gray}{HTML}{444444}
+\usetikzlibrary{
+    shapes,
+    shapes.symbols}
+
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=newest}
+\definecolor{ResponseOrange}{HTML}{FF9900}
+\definecolor{myGray}{HTML}{23373b}
+
+
+\usepackage{blindtext}
+
+\begin{document}
+  \chapterstyle{uio}
+  \pagestyle{uio}
+  \maxsecnumdepth{subsection}
+
+  \frontmatter
+    \pagenumbering{alph}
+    \maketitle
+    \part{Vorwort}
+    \pagenumbering{roman}
+    \clearpage
+    \include{abstract}
+    \cleardoublepage
+    \tableofcontents
+    \clearpage
+    \listoffigures
+    \clearpage
+    \listoftables
+    \listofsourcecode
+    %\clearpage
+    \mainmatter
+
+\chapter{Control Flow Integrity}
+\section{Über rücksprungadressbasierte Angriffe}
+\label{sec:ret_attack}
+Im Gebiet des themenverwandten \emph{Control Flow Checking} sollen Kontrollflussfehler entdeckt werden, welche durch zufällig gekippte Bits entstehen -- hervorgerufen durch Spannungsschwankungen oder Ionisierung über radioaktive Teilchen. Insbesondere Letzteres ist etwa in der Raumfahrt von eminenter Bedeutung.
+
+Konträr dazu steht bei der hier thematisierten \emph{Control Flow Integrity} ein potentieller Angreifer im Fokus, welcher durch gezielte Manipulation des Speichers Code in einer nicht erwünschten Reihenfolge zur Ausführung bringt. Der Umfang eines derartigen Angriffes reicht von einer Störung der Integrität des betroffenen Programms bis hin zur Ausführung beliebigen Codes auf dem zugrundeliegenden Rechner. Control Flow Integrity als Methode der statischen Codeanalyse versucht nun solche Angriffsmuster anhand von vorgeschalteten Prüfmechanismen bei Sprunganweisungen zu verhindern.
+
+Basierend auf dem Paper \emph{\enquote{Control-Flow Integrity Principles, Implementations, and Applications}} von Abadi et al.\,\cite{Abadi.2009} wird in der vorliegenden Arbeit eine Implementierung von CFI diskutiert.
+
+\subsection{Vorausgesetzte Kenntnisse}
+
+Die folgenden Inhalte setzen sowohl ein Grundverständnis der Programmierung in C und Assembler\sidenote{verwendet wird die Intel Syntax}, sowie der grundlegenden Funktionsweise der x86-Architektur voraus. Eine Einführung hierzu bietet beispielsweise \cite[S.7-91]{Erickson.2009}.
+
+\subsection{Grundlegendes Szenario}
+
+Von großer Bedeutung für die Implementierung einer Abwehrmaßnahme ist die Definition eines Angriffsszenarios. Die hier vorgestellten Methoden zur Überprüfung des Kontrollflusses sollen CFI unter der Prämisse sicherstellen, dass ein Angreifer in der Lage ist das gesamte Datensegment eines Prozesses zu manipulieren\,\cite{Abadi.2009}. Als möglicher Angriffsvektor für eine derartige Kontrolle über Hauptspeichersegmente könnte eine \emph{Buffer Overflow}-Schwachstelle ausgenutzt werden. Ein Beispiel hierfür zeigt Listing\,\ref{lst:bo_simple}.
+
+\begin{listing}
+\begin{minted}{c}
+#include <stdio.h>
+
+int main(){
+  int a = 5;
+  char str[4];
+  printf("Enter a string: ");
+  gets(str);
+  printf("%i\n", a);
+  return 0;
+}
+\end{minted}
+\caption{Beispiel eines für einen Buffer-Overflow anfälligen C-Programmes}
+\label{lst:bo_simple}
+\end{listing}
+
+Obiges Programm liest einen String von der Konsole und speichert diesen in einem vier Byte großen Array ab. Übersteigt die Länge der eingegeben Zeichenkette die Größe des Arrays, so werden die weiteren Bytes ebenfalls abgespeichert -- und überschreiben so die Variable \mintinline{c}{a}. Während für die Zeichenkette \mintinline{bash}{"AAA"} das Array \mintinline{c}{str} ausreichend groß ist, wird bei \mintinline{bash}{"AAAAA"} der Zahlenwert 65 ausgegeben.\sidenote{Strings werden in C mit einem impliziten Nullbyte terminiert, daher ist die Zeichenkette \mintinline{bash}{"AAA"} effektiv vier Byte groß.} Umgewandelt in das Hexadezimalsystem ergibt dies 41 -- die ASCII-Repräsentation des Buchstaben A.
+
+
+Damit das Beispiel nach Kompilierung mit gcc wie oben beschrieben ausgenutzt werden kann, muss gegebenenfalls per \mintinline{bash}{-fno-stack-protector} der \emph{Stack-Protecting} Mechanismus deaktiviert werden. Während in Listing \ref{lst:bo_simple} ein Buffer-Overflow auf dem Stack demonstriert wird, gibt es äquivalente Schwachstellen auch für Speicherbereiche auf dem Heap.
+
+
+CFI zielt jedoch nicht darauf ab, einen Buffer-Overflow an sich zu verhindern. Vielmehr ist diese Methode auf die möglichen Auswirkungen einer solchen Lücke ausgerichtet. Damit die Abwehrmechanismen zuverlässig funktionieren können, müssen weitere Einschränkungen gelten, welche im Abschnitt \ref{sec:voraussetzungen} vorgestellt werden. Des Weiteren setzt \cite{Abadi.2009} eine x86-Architektur mit Windows XP SP2 Betriebssystem voraus -- inwiefern die vorgestellten Mechanismen auch unter anderen Systemen funktionieren, wurde nicht geprüft.
+
+\subsection{Shellcode im Stack}
+
+Um das Beispiel aus Listing \ref{lst:bo_simple} in ein realistisches Umfeld zu übertragen: Ein Webserver nimmt Anfragen entgegen, die URL wird ohne Überprüfung in ein Array geschrieben. Ein Angreifer kann somit durch zu lange URLs Daten im Hauptspeicher überschreiben. Das übliche Ziel des Angreifers ist es nun, über die gefundene Schwachstelle beliebigen Code auf dem Server zur Ausführung zu bringen.
+
+Eine mögliche Herangehensweise hierzu stellt das direkte Einfügen von Shellcode auf dem Stack dar. Sie basiert grundsätzlich darauf, dass eine \mintinline{as}{ret}-Anweisung stets an eine Codestelle springt, deren Adresse üblicherweise zuvor von der aufrufenden Funktion auf den Stack gelegt wurde. Wird diese Adresse allerdings durch eine Buffer-Overflow Lücke manipuliert, wird der Sprung stattdessen an eine vom Angreifer definierte Zieladresse durchgeführt.
+
+Ein solcher Shellcode ist von einigen Einschränkungen betroffen -- beispielsweise darf er kein Nullbyte enthalten, da der Shellcode zum Zeitpunkt der Einfügung als String gespeichert wird. Ein Nullbyte würde diesen jedoch vorzeitig terminieren.
+
+Die Ausführung von Code in Datensegmenten wie dem Stack ist jedoch auf modernen Systemen üblicherweise nicht möglich -- wie in Abschnitt \ref{sec:voraussetzungen} beschrieben, wird dies durch die \emph{Data Execution Prevention} verhindert.
+
+\subsection{ret2libc}
+
+Um einen Buffer-Overflow trotz geschützter Datensegmente zur Ausführung von Code zu nutzen, kann auch bereits im Arbeitsspeicher bestehender Code verwendet werden. Ein Angriff, welcher hierbei auf die Standard-C-Bibliothek \emph{libc} zugreift, wird als \emph{return to libc} oder kurz \emph{ret2libc} bezeichnet \cite[S.\,412]{Erickson.2009}.
+
+Ein gängiges Ziel ist hierbei die Funktion \mintinline{c}{system()} zum Zugriff auf eine Kommandozeile. Unter Linux geschieht dies durch \mintinline{c}{system("/bin/sh")}. Hierzu wird zum einen die Speicheradresse der \mintinline{c}{system()}"=Funktion benötigt. Ebenfalls benötigt wird ein Zeiger auf das Argument für den Funktionsaufruf -- im Beispiel auf den String \mintinline{c}{"/bin/sh"}. Somit ist es möglich, durch Überschreiben der Rücksprungadresse den beschriebenen Funktionsaufruf durchzuführen.
+
+
+Adressrandomisierung erschwert derartige Angriffe, da die \mintinline{c}{system()}"=Funktion nicht länger bei jedem Aufruf unter der selben Speicheradresse zu erreichen ist.
+
+\subsection{Return Oriented Programming}
+
+Return Oriented Programming oder kurz ROP stellt eine Verallgemeinerung von ret2libc dar. Statt eine komplette bestehende Funktion aufzurufen, setzt sich der Exploit aus mehreren Sprüngen zu einzelnen Maschinencodeanweisungen vor einem \mintinline{as}{ret} zusammen. Durch geschickte Verkettung mehrerer dieser \emph{Gadget} genannten Bausteine entsteht das ROP Programm.
+
+Für Turing-Vollständigkeit reicht bereits eine sehr kleine Menge an nutzbaren Instruktionen aus -- bereits Subtraktion, \enquote{less-than}"=Vergleich und bedingte Sprünge genügen \cite[S.3]{Homescu.2012}. Um jedoch die benötigten Anweisungen anspringen zu können, werden deren Adressen benötigt. Diese können anhand der Binaries und einem Tool wie dem frei verfügbaren \emph{ropper}\sidenote{vergleiche \url{https://github.com/sashs/Ropper} oder anderen Tools wie gdb-peda. Prinzipiell leisten all diese Werkzeuge ähnliches bei der Suche nach verwendbaren Opcodes.} bestimmt werden.
+
+\begin{listing}
+\begin{minted}{text}
+400696: 48 83 c4 08           add    rsp,0x8
+40069a: 5b                    pop    rbx
+40069b: 5d                    pop    rbp
+40069c: 41 5c                 pop    r12
+40069e: 41 5d                 pop    r13
+4006a0: 41 5e                 pop    r14
+4006a2: 41 5f                 pop    r15
+4006a4: c3                    ret
+\end{minted}
+\caption{Ausschnitt eines C-Programmes als Assembler, erzeugt mit \emph{objdump}}
+\label{lst:example_rop}
+\end{listing}
+
+Ist es beispielsweise das Ziel, einen Wert vom Stack in das Register \mintinline{as}{rdi} zu schreiben, so kann dies mit dem Codeabschnitt aus Listing \ref{lst:example_rop} erfolgen. Die hierfür benötigte Anweisung \mintinline{as}{pop rdi} wird hexadezimal als \mintinline{as}{x5f} kodiert -- und ist unter der Adresse \mintinline{as}{x4006a3} in der Anweisung \mintinline{as}{pop r15} enthalten.
+
+Wie auch bei \emph{ret2libc} werden derartige Angriffe durch ASLR erschwert.
+
+\subsection{Zusammenfassung der Problematik}
+
+Alle der drei soeben vorgestellten Angriffe stellen einen Ausbruch aus dem vorgesehen Kontrollfluss dar, welcher durch Überschreiben der Rücksprungadresse erreicht wird. An diesem Punkt setzen nun die im Folgenden präsentierten Methoden zum Schutz des Kontrollflusses an. Ziel ist es hierbei nicht, den Buffer"=Overflow an sich zu verhindern. Dies ist in erster Linie Pflicht des Programmierers sowie zusätzlicher Schutzmechanismen des Compilers. Ziel ist es stattdessen, für ein gegebenes Binary -- welches möglicherweise für einen Buffer"=Overflow anfällig ist -- eine Verletzung des Kontrollflusses zu verhindern. Es handelt sich bei CFI somit um eine mitigierende Maßnahme.
+
+
+Insbesondere bei nicht länger gewarteter oder veralteter Software würde sich ein derartiger Schutz anbieten. Möglicherweise stellt auch das Betriebssystem fortgeschrittene Maßnahmen wie Stack Protection oder ASLR nicht zur Verfügung. In diesem Fall kann CFI dennoch ein Mindestmaß an Sicherheit bieten.
+
+
+\section{CFG - Kontrollflussgraphen}
+
+Essentiell für die Implementierung von Control Flow Checking ist das Aufstellen eines Kontrollflussgraphen. Dies geschieht durch Analyse der Maschinenbefehle eines Programms. Von besonderem Interesse sind hierbei Sprunganweisungen, deren Ziel dynamisch berechnet wird.
+
+Schutzmechanismen auf Basis von CFI werden nun genau dann benötigt, wenn die Sprungadresse dynamisch bestimmt wird. Ein \mintinline{as}{call [eax]} ist hiervon ebenso betroffen, wie ein \mintinline{as}{ret}. Wird als Sprungziel jedoch ein Label verwendet, beispielsweise \mintinline{as}{call square}, so kann dieser Sprung nicht manipuliert werden und bedarf auch keiner CFI"=Kontrolle. Der Grund hierfür ist der in Abschnitt \ref{sec:voraussetzungen} vorausgesetzte Schreibschutz des Textsegmentes. Auch sämtliche Varianten von \mintinline{as}{jmp} können dynamische Ziele verwenden.
+
+Dementsprechend wird auf Basis dieser Maschinenbefehle ein Kontrollflussgraph erstellt: Jede der genannten Sprunganweisungen entspricht einer Kante im Graphen. Alle möglichen Ziele einer Sprungquelle werden anschließend in einer Äquivalenzklasse zusammengefasst. Die Äquivalenzklasse erhält eine eindeutige ID -- auf Basis dieser ID wird im Anschluss die Validierung eines Sprunges durchgeführt.
+
+
+\section{CFI - Control Flow Integrity}
+\subsection{Voraussetzungen}
+\label{sec:voraussetzungen}
+
+Für die Implementierung von CFG gelten einige Voraussetzungen, die für einen funktionierenden Schutz des Kontrollflusses gelten müssen. Sind diese nicht oder nur teilweise erfüllt, so sinkt auch die Effektivität der hier vorgestellten Sicherheitsmaßnahmen entsprechend.
+
+Zum einen wird der Aktionsradius des Angreifers definiert. Wie bereits eingangs erörtert, erlangt ein potentieller Angreifer Kontrolle über das Datensegment eines Prozesses im Arbeitsspeicher. Es ist ihm sowohl möglich, Daten auszulesen als auch zu manipulieren. Hierzu liegen allerdings Einschränkungen vor.
+
+So erfordert die CFI Implementierung nach \cite{Abadi.2009}, dass Code-Segmente prinzipiell nicht beschreibbar sind.\sidenote{Nonwritable Code(NWC)} Es darf einem Angreifer etwa nicht möglich sein, eingefügte Überprüfungen zu überschreiben. Des Weiteren wird davon ausgegangen, dass Data-Segmente nicht ausführbar sind. Diese als \emph{Data Execution Prevention} bekannte Einschränkung wird von aktuellen Architekturen durch ein gesetztes \emph{NX-Bit} realisiert. Ist diese Sicherheitsvorkehrung aktiviert, so stürzen Prozesse automatisch ab, sobald sie versuchen, Inhalte von Datensegmenten als Code auszuführen \cite{Goktas.}.
+
+Damit die Überprüfung selbst nicht manipuliert werden kann, dürfen die verwendeten Register nicht von anderen Prozessen beschreibbar sein. Dies ist in gängigen Betriebssystemen gegeben.
+Schließlich muss es möglich sein, eine ausreichende Anzahl von einzigartigen ID-Werten für die Validierung der Sprünge zu erstellen. So wird für jedes mögliche Sprungziel eine eindeutige ID benötigt, die zudem nicht im restlichen Code vorkommen darf. Zudem beschreibt \cite{Abadi.2009} die Implementierung von CFI unter einer x86 Architektur sowie dem Betriebssystem \emph{Windows XP SP2}. Auf die Funktionalität der vorgestellten Methoden unter unixartigen Systemen oder unter 64-Bit Betriebssystemen geht die Quelle nicht ein. Da sich diese Systeme auf dieser Ebene jedoch nicht grundlegend voneinander unterscheiden, sollte CFI äquivalent anwendbar sein.
+
+
+\subsection{Implementierung}
+Für bestehendes Binary wird ein Kontrollflussgraph erzeugt, anhand dessen das Binary um CFI ergänzt werden kann. Man erhält erneut ein ausführbares Binary.
+
+\begin{figure}[ht!]
+  \centering
+  \begin{tikzpicture}
+  \node[signal, node distance = 0.4cm, color=white, fill=myGray,inner sep=10pt,minimum width=2.5cm,](a){\texttt{Binary}};
+  \node[signal, node distance = 0.4cm, color=white, fill=myGray,inner sep=10pt,right=of a,minimum width=2.5cm,](b){\texttt{CFG}};
+  \node[signal, node distance = 0.4cm, color=white, fill=myGray,inner sep=10pt,right=of b,minimum width=2.5cm,](c){\texttt{CFI}};
+  \node[signal, node distance = 0.4cm, color=white, fill=myGray,inner sep=10pt,right=of c,minimum width=2.5cm,](d){\texttt{Binary}};
+  \end{tikzpicture}
+  \caption{Prozess zur Implementierung von CFI}
+  \label{img:process.cfi}
+\end{figure}
+
+Im Folgenden soll gezeigt werden, wie ein Funktionsaufruf auf Basis von CFI nach \cite{Abadi.2009} abgesichert werden kann. Ein Funktionsaufruf beinhaltet zwei Sprunganweisungen, die getrennt voneinander betrachtet werden. Zuerst wird mit \mintinline{as}{call ptr} die Codezeile mit der Adresse \mintinline{as}{ptr} aufgerufen, zudem wird die Adresse der auf \mintinline{as}{call} folgenden Anweisung als Rücksprungadresse auf den Stack gelegt. Zum anderen wird bei dem nächsten Aufruf einer \mintinline{as}{ret}"=Anweisung ebenjene Rücksprungadresse vom Stack gelesen und als Sprungziel verwendet.
+
+Wenn entschieden wurde, dass für eine bestimmte Sprunganweisung zu einem bestimmten Ziel eine Absicherung benötigt wird, so wird der Maschinencode an diesen beiden Stellen modifiziert. Wie die Überprüfung umgesetzt wird, zeigen die Listings \ref{lst:jump_example} und \ref{lst:jump_example_with_cfi}.
+
+\begin{listing}
+\begin{minted}{text}
+FF 53 08                call [ebx+8]            ; Aufruf eines Funktionspointers
+...
+8B 44 24 04             mov eax, [esp+4]        ; Ziel der Funktion
+\end{minted}
+\caption{Ursprüngliche Callanweisung und Sprungziel}
+\label{lst:jump_example}
+\end{listing}
+
+\begin{listing}[ht]
+\begin{minted}{text}
+8B 43 08                mov eax, [ebx+8]         ; Zeiger nach eax schreiben
+3E 81 78 04 78 56 34 12 cmp [eax-4], 0x12345678  ; Test des Labels vor Sprungziel
+75 13                   jne error_label          ; Fehlerbehandlung
+FF D0                   call eax                 ; Funktionsaufruf
+...
+3E 0F 18 05 78 56 34 12 prefetchnta [0x12345678] ; Label als Argument für prefetch
+8B 44 24 04             mov eax, [esp+4]         ; Ziel der Funktion
+\end{minted}
+\caption{Listing \ref{lst:jump_example} ergänzt um CFI Überprüfung}
+\label{lst:jump_example_with_cfi}
+\end{listing}
+
+Listing \ref{lst:jump_example} enthält einen \mintinline{as}{call}"=Aufruf, welcher einen Funktionspointer verwendet. Das Ziel des Sprunges liegt im Arbeitsspeicher unter der Adresse \mintinline{text}{ebx+8} und ist möglicherweise durch einen Bufferoverflow modifizierbar. Ein mögliches Ziel dieses Aufrufs zeigt Zeile 3. In Listing \ref{lst:jump_example_with_cfi} wird nun diese Sprunganweisung um eine CFI"=Überprüfung ergänzt.
+
+Zuerst wird die Zieladresse in das \mintinline{as}{eax}"=Register kopiert. Anschließend wird überprüft, ob die vier Bytes \emph{vor} dem Sprungziel identisch mit dem gewählten Label sind. Ist dies nicht der Fall, so wird mit \mintinline{as}{jne error_label} eine Fehlerbehandlungsroutine aufgerufen, welche beispielsweise den Prozess beendet. Bei einem validen Sprungziel erfolgt abschließend der Funktionsaufruf, die Zieladresse befindet sich bereits im \mintinline{as}{eax}"=Register. Vor dem Sprungziel muss nun ebenfalls das zugehörige Label eingefügt werden. Eine Möglichkeit, dies zu realisieren, stellt die seiteneffektfreie \mintinline{as}{prefetchnta}"=Anweisung dar. Sie erhält als Argument das entsprechende Label. \mintinline{as}{prefetchnta} selbst lädt einen Wert in den Cache und markiert ihn für eine einmalige Verwendung.
+
+Ähnlich wie in Listing \ref{lst:jump_example_with_cfi} können auch \mintinline{as}{ret}"= oder \mintinline{as}{jmp}"=Anweisungen modifiziert werden.
+
+Alternativ hierzu kann das Label auch als einfaches Datenwort im Textsegment eingefügt werden. Dies reduziert die Anzahl der benötigten Bytes um die Länge der
+\mintinline{as}{prefetchnta} Anweisung.
+
+\subsection{Vorteile}
+
+Die gezeigten CFI"=Maßnahmen stellen in gewissen Rahmen den kontrollierten Ablauf eines Programms sicher. Insbesondere Sprünge an beliebige Codestellen können hierdurch effizient verhindert werden. Dass CFI dennoch keinen absolut wirksamen Schutz bieten kann, wird im folgenden Abschnitt \ref{sec:disadv} dargestellt.
+Um die Effektivität ihrer CFI"=Implementierung zu testen, verwendeten \cite{Abadi.2009} eine Suite von 18 für Buffer"=Overflows anfällige Programme. An jedem dieser Programme wurden Shellcodes, ret2libc"=Angriffe und Zeigermanipulationen gestartet. Nach Anwendung von CFI gelang es in allen 18 Fällen Angriffe auf den Kontrollfluss zu verhindern.
+
+Der grundlegende Prozess zur Implementierung nach \cite{Abadi.2009} beinhaltet, dass CFI nicht nur bei der Kompilierung eingebunden werden kann: Auch bereits erstellte Binaries sollen noch mit entsprechenden Ergänzungen versehen werden können. Dies erlaubt die Anwendung von CFI auch bei Programmen, für die die Kompilierung nicht länger möglich oder mit großem Aufwand versehen ist -- beispielsweise weil der Quellcode nicht vorhanden ist.
+
+Des Weiteren erlaubt es der vergleichsweise einfache Aufbau der Überprüfungslogik einen Beweis über die Korrektheit der gezeigten mitigierenden Maßnahmen führen. Dies zeigen Abadi et. al in \cite{Abadi.2009}.
+
+
+\subsection{Nachteile}
+\label{sec:disadv}
+Neben den aufgezeigten Vorteilen in Bezug auf erhöhte Sicherheit und Abwehr von Angriffen auf Sprungadressen bringt die Anwendung von CFI auch Nachteile bzw. Einschränkungen mit sich.
+
+So stellt CFI an sich keinen Schutz vor Buffer-Overflows dar. Hierfür sind andere Schutzmechanismen wie SSP oder sichere Funktionen zuständig. Beispielsweise sollte statt der Funktion \mintinline{c}{gets()} aus Listing \ref{lst:bo_simple} stets \mintinline{c}{fgets()} verwendet werden. Aufgrund dessen und der Definition von CFI können Angriffe, die den Kontrollflussgraphen nicht verletzen, auch nicht erkannt werden. Wird etwa in Listing \ref{lst:c_system} die Variable \mintinline{c}{command} überschrieben, kann eine beliebige Datei mit den selben Rechten wie das ursprüngliche C"=Programm ausgeführt werden.
+
+\begin{listing}
+\begin{minted}{c}
+char command[] = "/harmless/executable";
+system(command);
+\end{minted}
+\caption{C-Programm mit \mintinline{c}{system()} Aufruf}
+\label{lst:c_system}
+\end{listing}
+% Angriffe durch Manipulation von Argumenten
+% Beispielcode
+
+Des Weiteren ist \emph{Fault Tolerance} kein Ziel von CFI. Wie eingangs erwähnt, befasst sich hiermit das Gebiet des Control Flow Checkings. Wenn auch manche durch zufällig gekippte Bits entstandene Kontrollflussfehler entdeckt werden können, wird prinzipiell davon ausgegangen, dass manche Speicherbereiche unveränderbar sind. Hierunter fallen etwa die Register oder die Textsegmente. Fehler durch radioaktive Strahlung können jedoch im gesamten Arbeitsspeicher auftreten. Somit sind die Prüfmechanismen nicht länger zuverlässig.
+
+Eine weitere Problematik stellt die Definition des Kontrollflusses dar: Wird dieser fälschlicherweise zu stark einschränkend definiert, so kann das Programm auch ohne Angriff abstürzen.\sidenote{\emph{false positive}} Auch das Gegenteil ist problematisch. Erlaubt der Kontrollflussgraph zu viele mögliche Sprungziele, könnte dies einen Angriff ermöglichen.
+
+
+Auch die Implementierung von CFI hat Nachteile technischer Natur. So wird für die Überprüfung in Listing \ref{lst:jump_example_with_cfi} das \mintinline{as}{eax}"=Register verwendet. Möglicherweise ist der folgende Programmteil jedoch abhängig vom aktuellen Wert des Registers -- es könnten somit Seiteneffekte auftreten, die den weiteren Programmablauf stören. Auch die \mintinline{as}{cmp}"=Anweisung setzt je nach Resultat verschiedene Flags, was zu selbigem Problem führen könnte. Um dies zu umgehen, müssten die Register vor der CFI"=Überprüfung etwa auf dem Stack zwischengespeichert werden. Während ihrer Arbeit zu CFI entdeckten \cite{Abadi.2009} lediglich eine geringe Anzahl an Codestellen, an welchen eine Sicherung der Register notwendig gewesen wäre. Insbesondere handgeschriebener -- also nicht compilergenerierter -- Code sei demnach hierfür anfällig.
+
+Jegliche Art von dynamisch eingebundenem Code ist problematisch für CFI: Werden etwa dynamisch gelinkte Bibliotheken verwendet, die ohne CFI kompiliert wurden, so sind Schwachstellen in diesen Codeteilen nach wie vor angreifbar. Auch selbstmodifizierender Code oder Code der zur Laufzeit erzeugt wird ist nicht Teil der Kontrollflussüberprüfung.
+
+
+Zudem erlaubt die Implementierung aus Listing \ref{lst:jump_example_with_cfi} selbst eine Möglichkeit zur Verletzung des Kontrollflusses: Zur Validierung des Sprungzieles wird die \mintinline{as}{cmp}"=Anweisung verwendet, sie erhält als Argumente eine Speicheradresse vor dem eigentlichen Sprungziel und das Label auf welches hin getestet wird. Somit steht an der Stelle des Vergleiches selbst auch das Label, ein Sprung an die auf \mintinline{as}{cmp} folgende Anweisung ist also möglich. Dies resultiert in einer Endlosschleife zwischen den Zeilen 3 und 4 des Listings. \cite{Abadi.2009} betrachten dies nicht als Einschränkung der Funktionsfähigkeit von CFI, da an Angreifer mit voller Kontrolle über das Datensegment viele Möglichkeiten zur Erzeugung von Endlosschleifen habe.
+%TODO Beispiel
+
+Das Einfügen von Maschinenbefehlen zur Überprüfung eines Sprunges führt dazu, dass relative Sprungadressen nicht länger an die korrekte Stelle zeigen. Diese müssen anschließend korrigiert werden.
+
+Durch die zusätzlichen Maschinenbefehle entsteht ein gewisser Overhead -- sowohl bei der CPU"=Auslastung während der Ausführung als auch in Bezug auf die Größe der Binaries. Gegebenenfalls muss der Zugewinn an Sicherheit gegen die dadurch entstehenden Nachteile aufgewogen werden. Genauere Betrachtungen zum Overhead erfolgen in Abschnitt \ref{sec:overhead}.
+
+Der gravierendste Nachteil der vorgestellten Implementierung liegt jedoch in der Zustandslosigkeit des zugrundeliegenden Kontrollflussgraphen. Wird eine Funktion \mintinline{c}{x()} aufgerufen, so wird sowohl beim Aufruf als auch beim Return eine CFI"=Überprüfung durchgeführt. Üblicherweise sollte ein Return wieder an jene Stelle im Code zurückkehren, von welcher die Funktion aus aufgerufen wurde. Beide Überprüfungen sind jedoch voneinander unabhängig. Wird nun die Rücksprungadresse manipuliert, so werden Sprünge an alle anderen Adressen, von denen aus \mintinline{c}{x()} aufgerufen wird, nicht als Verletzung des Kontrollflusses erkannt. Im Beispiel von Listing \ref{lst:c_many_printf} wird innerhalb der \mintinline{c}{main()}"=Funktion \mintinline{c}{someFunction()} aufgerufen, welche wiederum \mintinline{c}{x()} ausführt. Wird nun die Rücksprungadresse von \mintinline{c}{x()} manipuliert, so kann auch die Funktion \mintinline{c}{secretFunction()} als Sprungziel verwendet werden. Insbesondere Standardfunktionen wie \mintinline{c}{malloc()}, \mintinline{c}{printf()} oder \mintinline{c}{strcpy()} werden üblicherweise von vielen Codestellen aus aufgerufen. Gelingt es, eine dieser Funktionen entsprechend anzugreifen, so kann ein Angreifer eine Vielzahl möglicher Sprungziele verwenden.
+
+
+\begin{listing}
+\begin{minted}{c}
+int main(){
+  ...
+  someFunction();
+  ...
+}
+
+int someFunction(){
+  x();
+}
+
+int secretFunction(){
+  x();
+  puts("secret password");
+}
+\end{minted}
+\caption{Beispiel eines C-Programmes mehreren Methodenaufrufen}
+\label{lst:c_many_printf}
+\end{listing}
+
+Funktionen, die in Abhängigkeit von den übergebenen Argumenten die eigene Rücksprungadresse überschreiben können, werden als \emph{dispatcher functions} bezeichnet. Beispiele hierfür aus der Standardbibliothek von C werden in Listing \ref{lst:dispatcher} aufgelistet.
+\begin{listing}
+\begin{minted}{c}
+memcpy();
+printf();
+strcat();
+fputs();
+\end{minted}
+\caption{Beispiele für \emph{dispatcher functions}}
+\label{lst:dispatcher}
+\end{listing}
+Auch Funktionen, welche eine \emph{dispatcher function} aufrufen, sind dementsprechend selbst ebenfalls \emph{dispatcher functions}, da auch deren Rücksprungadresse möglicherweise überschrieben werden kann. Aus den genannten Gründen betrachtet \cite[S. 167]{Carlini.2015} CFI in dieser Form prinzipiell als defekt. Um derartige Angriffe zu verhindern wird ein \emph{protected shadow call stack} benötigt. Hierbei werden die Rücksprungadressen in einem vor Manipulation geschützten Speicherbereich hinterlegt. Bei jedem Return wird die eigentliche Rücksprungadresse durch einen Vergleich mit der Rücksprungadresse vom shadow call stack validiert. Damit wird ein möglicher Angriff auf Rücksprungadressen auf das bloße Rückabwickeln des Callstacks reduziert. Ein \emph{protected shadow call stack} bringt jedoch zwei Probleme mit sich: Zum einen stellt sich die Frage der technischen Realisierung eines geschützten Speicherbereichs, zum anderen wird weiterer Overhead angefügt\,\cite[S.164]{Carlini.2015}.
+
+Intel hat allerdings bekanntgegeben, dass zukünftige Prozessorgenerationen über eine Hardwarerealisierung eines shadow call stacks verfügen sollen. \mintinline{as}{CALL} und \mintinline{as}{RET} werden entsprechend modifiziert, sodass sie die oben dargestellte Funktionen automatisch anbieten \cite{Intel.2016}.
+
+% Speicheradressen müssen alle angepasst werden
+% Sobald der CFG einmal verlassen wurde, ist erneutes "Fangen" schwierig. Dennoch ist ROP erschwert, da auch bei ret CFG geschützt wird.
+% Kein Schutz vor BO
+% Kein Schutz vor Hacks innerhalb von CFG (Manipulation von Argumenten)
+% Kein Schutz vor Fault Tolerance
+% Zu stark einschränkender CFG -> Programmabsturz
+% Zu schwach einschränkender CFG -> Mögliche verbleibende Lücken
+% Manipulation von Registern
+% Dynamisch gelinkte Bibliotheken ohne CFI schutz, Selbstmodifizierender Code, Runtime Code Generation
+% LOOPS
+
+\subsection{Hardwarerealisierung}
+
+Neben der vorgestellten Implementierung als Sequenz einfacher Maschinenbefehle wäre es denkbar, dass die benötigten Operationen zur Absicherung des Kontrollflusses in den Befehlssatz eines Prozessors integriert werden. Um dies zu erreichen wird neben einem \mintinline{as}{label ID} eine Anweisung \mintinline{as}{call ID, DST} benötigt, die einen Sprung an die Adresse \mintinline{as}{DST} nur durchführt, falls an dieser Codestelle die entsprechende \mintinline{as}{ID} als Label eingetragen ist. Identisch hierzu prüft auch \mintinline{as}{ret ID} beim Rücksprung. Laut \cite[S.9]{Abadi.2009} ist nicht zu erwarten, dass eine derartige hardwarenahe Implementierung von CFI in kommende Prozessorgenerationen Einzug findet. Da die genannten Operationen im Vergleich zu den vorgestellten Maschinencodebefehlssequenzen atomar sind, würden sie möglicherweise einen höheren Grad an Sicherheit bieten. Außerdem wären diese Befehle frei von Seiteneffekten, überschreiben also keine Register. Es ist ferner anzunehmen, dass eine derartige hardwarenahe Implementierung effizienter als die softwareseitige Lösung ist -- sowohl was Umfang und Komplexität der Maschinenbefehle als auch deren Ausführungszeit angeht.
+
+\subsection{Overhead}
+\label{sec:overhead}
+
+
+Um festzustellen, welche zusätzliche Last durch die Anwendung von CFI erzeugt wird, wurden Tests mit dem \emph{SPEC2000} Benchmark durchgeführt. Dieser Benchmark beinhaltet die Ausführung diverser auf C/C++ basierender Programme, wie etwa gcc oder gzip. In Abbildung \ref{img:time.overhead} wird dargestellt, wie stark sich die Ausführungsdauer mit CFI erhöht. Im Durchschnitt benötigten die Programme 16\,\% mehr Zeit.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}
+  \begin{axis}[
+  ybar,
+  bar width=22pt,
+  width = \textwidth,
+  height = 5cm,
+  legend style={at={(0.5,-0.15)},
+  anchor=north,legend columns=-1},
+  ylabel={zeitlicher Overhead},
+  symbolic x coords={bzip,crafty,eon,gap,gcc,gzip,mcf,parser,twolf,vortex,vpr},
+  xtick=data,
+  nodes near coords align={vertical},
+  point meta={y*100},
+    nodes near coords={\pgfmathprintnumber\pgfplotspointmeta\%},
+  tick align=outside,
+  enlarge y limits={0.2,upper},
+  enlarge x limits=0.05,
+  xlabel style={rotate=-45},
+  x tick label style={rotate=45, anchor=north east, inner sep=0mm},
+  yticklabel={\pgfmathparse{\tick*100}\pgfmathprintnumber{\pgfmathresult}\%},
+  %axis background/.style={fill=gray!5},
+  %grid=major,
+  ]
+  \addplot[draw=black, fill=myGray] coordinates {(bzip,0.01) (crafty,0.46) (eon,0.33) (gap,0.31) (gcc,0.10) (gzip,0.03) (mcf,0.02) (parser,0.1) (twolf,0.04) (vortex,0.37) (vpr,0.06)};
+  \end{axis}
+  \end{tikzpicture}
+  \caption{Zeitlicher Overhead bei der Ausführung des SPEC2000 Benchmarks mit CFI}
+  \label{img:time.overhead}
+\end{figure}
+
+Die Erstellung des Kontrollflussgraphen und die Anpassung der Maschinenbefehle -- also der gesamte Rewritingprozess -- benötigte pro Binary etwa zehn Sekunden. Durch die zusätzlichen Maschinencodebefehle wuchsen die Dateigrößen im Mittel um 8\,\% an.
+
+
+\subsection{Anwendung von CFI in der Praxis}
+Sowohl Clang als auch Visual Studio unterstützen Kompilierung von C"=Programmen mit Überprüfung des Kontrollflusses. Unter Clang wird dies durch \mintinline{text}{-fsanitize=cfi} aktiviert, das als \emph{Control Flow Guard} bezeichnete Gegenstück unter benötigt die Option \mintinline{text}{/guard:cf} \cite{ClangTeam.2015,Microsoft.2016}. Die genannten Compiler setzen CFI jedoch nicht zwangsweise so um, wie in \cite{Abadi.2009} beschrieben wurde. Eine offizielle Implementierung des Coderewritingprozesses nach \cite{Abadi.2009} steht nicht zur Verfügung.
+
+Das Chromium-Projekt plant, zukünftige Releases mit der entsprechenden Option von Clang zu kompilieren. Tests ergaben hierbei 1\% CPU Overhead und 7\,-\,9\% größere Binaries\,\cite{ChromiumProjects.}.
+
+\begin{listing}
+\begin{minted}{c}
+int square(int a) {
+  return a*a;
+}
+
+int main(int argc, char *argv[]) {
+  int a = 0xCAFE;
+  int (*functionPtr)(int);
+  functionPtr = &square;
+  int b = functionPtr(a);
+  return 0;
+}
+\end{minted}
+\caption{C-Programm mit Funktionspointer zur Analyse von CFI unter Visual Studio}
+\label{lst:c_pointer}
+\end{listing}
+
+Das C"=Programm aus Listing \ref{lst:c_pointer} ruft die Funktion \mintinline{c}{square()} über einen Funktionspointer auf. Hierdurch wird erreicht, dass Visual Studio bei der Kompilierung mit der vorgestellten Option \mintinline{text}{/guard:cf} Überprüfungscode einfügt.
+
+\begin{listing}
+\begin{minted}{text}
+_main:
+  push    ebp
+  mov     ebp,esp
+  sub     esp,10h
+  mov     dword ptr [ebp-8],0CAFEh
+  mov     dword ptr [ebp-0Ch],offset ?square
+  mov     eax,dword ptr [ebp-8]
+  push    eax
+  mov     ecx,dword ptr [ebp-0Ch]
+  mov     dword ptr [ebp-4],ecx
+  mov     ecx,dword ptr [ebp-4]
+  call    dword ptr [___guard_check_icall_fptr]
+  call    dword ptr [ebp-4]
+  add     esp,4
+  mov     dword ptr [ebp-10h],eax
+  xor     eax,eax
+  mov     esp,ebp
+  pop     ebp
+  ret
+\end{minted}
+\caption{Assemblerbefehle der Funktion \mintinline{c}{main()} aus Listing \ref{lst:c_pointer}}
+\label{lst:asm_comp}
+\end{listing}
+
+Basierend auf dem Kompilat von Listing \ref{lst:c_pointer} wurde mit dem Tool \emph{dumpbin}\sidenote{Äquivalent zu objdump unter gcc.} ein Auszug aus den generierten Maschinenbefehlen erzeugt, welche in Listing \ref{lst:asm_comp} dargestellt werden. Neben kleineren Offsetanpassungen werden hierbei die Zeilen neun bis zwölf eingefügt, welche den Pointer \mintinline{as}{___guard_check_icall_fptr} aufrufen. Die aufgerufene Funktion \mintinline{c}{square()} bleibt von der CFI"=Maßnahme unberührt und wird nicht verändert. \mintinline{as}{___guard_check_icall_fptr} verweist auf die entsprechenden Prüfroutinen in der geladenen \emph{ntldll.ddl}. Insgesamt werden hierbei 15 zusätzliche Assembleranweisungen pro Funktionsaufruf ausgeführt. Tests unter Visual Studio 2015 ergaben jedoch, dass nur überprüft wird, ob das Sprungziel Beginn einer gültigen Funktion ist. Echte Kontrollflussüberprüfung konnte nicht festgestellt werden. Diese Funktion wird scheinbar durch eine Liste in den Headerdaten der ausführbaren Datei realisiert. Diese \enquote{Guard Cf Function Table} kann mit \texttt{ dumpbin /headers /loadconfig any.exe} ausgelesen werden.
+
+\section{Fazit}
+Neben CFI werden bereits eine Vielzahl anderer Schutzmechanismen gegen derartige Angriffe eingesetzt. Hierzu zählen beispielsweise ASLR zur Randomisierung der Adressen von eingebundenen Bibliotheken oder auch \emph{stack canaries}, welche zufällige Bytes am Ende von Puffern oder vor der Rücksprungadresse ablegen. Nach Schreiboperationen auf dem Puffer oder vor dem Return kann überprüft werden, ob das stack canary geändert wurde -- was auf einen Bufferoverflow hindeutet.
+
+All diese Maßnahmen können jedoch keinen absoluten Schutz bieten. In erster Linie ist nach wie vor in der Verantwortung des Programmierers, seinen Code so zu organisieren, dass die in Abschnitt \ref{sec:ret_attack} beschriebenen Angriffe möglichst verhindert werden. Da Irren nun mal menschlich ist, stellt die Anwendung dieser Maßnahmen dennoch ein zusätzliches Maß an Schutz dar.
+
+\printbibliography
+
+\end{document}
