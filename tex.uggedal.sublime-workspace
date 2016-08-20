@@ -1,0 +1,1302 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"my",
+				"myInt"
+			],
+			[
+				"gra",
+				"graphicx"
+			],
+			[
+				"201",
+				"NeosCMS.201 NeosCMS.2015b: Neos Split FAQ"
+			],
+			[
+				"Datum",
+				"Datum_bis"
+			],
+			[
+				"e",
+				"pageEncoding=\"utf-8\"	pageEncoding"
+			],
+			[
+				"Arra",
+				"ArrayAppend"
+			],
+			[
+				"cfsqltyv",
+				"cfsqltype=\"cf_sql_longvarchar\"	cfsqltype"
+			],
+			[
+				"cfsqltyt",
+				"cfsqltype=\"cf_sql_timestamp\"	cfsqltype"
+			],
+			[
+				"solr",
+				"solr_index"
+			],
+			[
+				"mime",
+				"mimetype=\"text/html\"	mimetype"
+			],
+			[
+				"add",
+				"adddoc"
+			],
+			[
+				"ser",
+				"serializeJSON	fn. (cfscript)"
+			],
+			[
+				"name",
+				"name_s"
+			],
+			[
+				"datum",
+				"Datum_von"
+			],
+			[
+				"chfttp",
+				"cfhttpparam	Tag (cmfl)"
+			],
+			[
+				"meh",
+				"method=\"post\"	method"
+			],
+			[
+				"Json",
+				"deserializeJSON	fn. (cfscript)"
+			],
+			[
+				"ty",
+				"type=\"header\"	type"
+			],
+			[
+				"typ",
+				"type=\"cgi\"	type"
+			],
+			[
+				"res",
+				"result	@result"
+			],
+			[
+				"mi",
+				"mimetype=\"text/html\"	mimetype"
+			],
+			[
+				"cfhttp",
+				"cfhttpparam	Tag (cmfl)"
+			],
+			[
+				"tex",
+				"texlive"
+			],
+			[
+				"ch",
+				"ch:requirements"
+			],
+			[
+				"lst",
+				"lst:timestamploganalyzer"
+			],
+			[
+				"r",
+				"ref"
+			],
+			[
+				"cy",
+				"cyclomaticComplexity"
+			],
+			[
+				"us",
+				"usepackage"
+			],
+			[
+				"Date",
+				"Datenhaltung"
+			],
+			[
+				"isol",
+				"isolation=\"serializable\"	isolation"
+			],
+			[
+				"out",
+				"output=\"false\"	output"
+			],
+			[
+				"returnty",
+				"returntype=\"any\"	returntype"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 400.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"push",
+				"Git: Push"
+			],
+			[
+				"commit",
+				"Git: Commit"
+			],
+			[
+				"add",
+				"Git: Add All"
+			],
+			[
+				"com",
+				"Git: Commit"
+			],
+			[
+				"git",
+				"Git: Add All"
+			],
+			[
+				"git commit",
+				"Git: Commit"
+			],
+			[
+				"git add",
+				"Git: Add All"
+			],
+			[
+				"pus",
+				"Git: Push"
+			],
+			[
+				"gitadd",
+				"Git: Add All"
+			],
+			[
+				"commi",
+				"Git: Commit"
+			],
+			[
+				"pull",
+				"Git: Pull"
+			],
+			[
+				"gita dd",
+				"Git: Add All"
+			],
+			[
+				"quick",
+				"Git: Quick Commit"
+			],
+			[
+				"qui",
+				"Git: Quick Commit"
+			],
+			[
+				"quic",
+				"Git: Quick Commit"
+			],
+			[
+				"install",
+				"Git: Reset (unstage) All"
+			],
+			[
+				"disable",
+				"Package Control: Disable Package"
+			],
+			[
+				"enab",
+				"Package Control: Enable Package"
+			],
+			[
+				"disale",
+				"Package Control: Disable Package"
+			],
+			[
+				"",
+				"Colorsublime: Browse Themes"
+			],
+			[
+				"istall",
+				"Package Control: Install Package"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"newfile",
+				"File: New File Relative to Project Root"
+			],
+			[
+				"dele",
+				"File: Delete"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"recon",
+				"LaTeXTools: Reconfigure and migrate settings"
+			],
+			[
+				"settings",
+				"Preferences: Settings - Default"
+			],
+			[
+				"enable",
+				"LiveReload: Enable/disable plug-ins"
+			],
+			[
+				"live",
+				"LiveReload: Enable/disable plug-ins"
+			],
+			[
+				"rem",
+				"Package Control: Remove Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"lst",
+				"Package Control: List Packages"
+			]
+		],
+		"width": 408.0
+	},
+	"console":
+	{
+		"height": 343.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": false,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/Users/Stefan/Documents/tex.uggedal"
+	],
+	"file_history":
+	[
+		"/C/Users/Stefan/Downloads/classicthesis.sty",
+		"/C/Users/Stefan/test.html",
+		"/C/Users/Stefan/AppData/Local/Studio_pomaranča_d.o.o__O/WriteMonkey.exe_Url_omj5dlw2zenrpbjtg40fcwryu5p23qfg/2.7.0.3/user.config",
+		"/C/Users/Stefan/Documents/tex.test/document.tex",
+		"/C/Users/Stefan/Downloads/hacksepackse-1HHLWQdX/test.txt",
+		"/C/Users/Stefan/Documents/tex.uggedal.test/base.tex",
+		"/C/Users/Stefan/AppData/Roaming/Sublime Text 3/Packages/LaTeXTools/README.markdown",
+		"/D/documents/Seminararbeiten_SS2015/24_SimonWeiss_Informationswahrnehmung/Seminararbeit_v2.tex",
+		"/D/documents/Seminararbeiten_SS2015/25_TimSalzmann_SicherheitImIOSBetriebssystem/Seminararbeit.tex",
+		"/D/documents/Seminararbeiten_SS2015/08_StefanBraun_AnalyseJavaProjekte/document/config/pagestyle.tex",
+		"/D/documents/Seminararbeiten_SS2015/08_StefanBraun_AnalyseJavaProjekte/document/config/document.tex",
+		"/D/documents/Seminararbeiten_SS2015/08_StefanBraun_AnalyseJavaProjekte/document/config/listings.tex",
+		"/D/documents/Seminararbeiten_SS2015/08_StefanBraun_AnalyseJavaProjekte/document/document.tex",
+		"/D/documents/Seminararbeiten_SS2015/08_StefanBraun_AnalyseJavaProjekte/document/chapter/title.tex",
+		"/C/Users/Stefan/tex.stack/tex2016.tex",
+		"/C/Users/Stefan/Documents/uggedal/src/base.tex",
+		"/C/Users/Stefan/Documents/uggedal/src/uiothesis.cls",
+		"/C/Users/Stefan/tex.stack/fullpage_title.tex",
+		"/C/Users/Stefan/tex.stack/fullpage_title_white.tex",
+		"/C/Users/Stefan/workspace/soapui/pom.xml",
+		"/C/Users/Stefan/workspace/soapui/soapui/pom.xml",
+		"/C/Users/Stefan/workspace/soapui/soapui-maven-plugin/pom.xml",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/document.tex",
+		"/C/Users/Stefan/Documents/tex.cfi.document/seminar.tex",
+		"/C/Users/Stefan/tex.stack/commons.tex",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/imports/def.tex",
+		"/C/Users/Stefan/Desktop/tmctf.html",
+		"/C/Users/Stefan/Desktop/some.js",
+		"/C/Users/Stefan/Documents/tex.cfi.document/imports/seminar_def.tex",
+		"/C/Users/Stefan/Downloads/download",
+		"/C/Users/Stefan/tex.stack/tikz_arrow_error.tex",
+		"/C/Users/Stefan/Documents/uggedal/config.yml",
+		"/C/Users/Stefan/tex.stack/ernest.tex",
+		"/C/Users/Stefan/Desktop/b1.js",
+		"/C/Users/Stefan/Desktop/xg_cm08/FILE_ID.DIZ",
+		"/C/Users/Stefan/Desktop/pom.xml",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/sql/install.sql",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/controllers/ajax/campaigns.php",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/controllers/back/premium.php",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/controllers/front/subscribers.php",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/controllers/front/confirm.php",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/controllers/front/email.php",
+		"/C/Users/Stefan/Downloads/wysija-newsletters.2.7.2/wysija-newsletters/core/base.php",
+		"/C/Users/Stefan/Desktop/crackme1/crackme1",
+		"/C/Users/Stefan/AppData/Local/Temp/7zO07A07F3D/.text",
+		"/C/Users/Stefan/Downloads/.text",
+		"/C/xampp/htdocs/dec.php",
+		"/C/xampp/htdocs/decodeme_decodeme.php",
+		"/D/documents/buecher/checklist_openshift.txt",
+		"/D/documents/buecher/watten.txt",
+		"/D/documents/buecher/Login.txt",
+		"/C/Users/Stefan/Desktop/xg_cm08/READ.ME",
+		"/C/Users/Stefan/Desktop/krio_zc8/Solution.txt",
+		"/C/Users/Stefan/Desktop/b1,js",
+		"/C/Users/Stefan/tex.stack/_minted-ernest/28FDB4DCD758F6C4EEA4EBDE886DA6354CDEA4B740E5C06562178430439044F5.pygtex",
+		"/C/Users/Stefan/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/Users/Stefan/Desktop/chat2.txt",
+		"/C/Users/Stefan/Desktop/chat.txt",
+		"/C/Users/Stefan/tex.stack/strike_listing.tex",
+		"/C/Users/Stefan/Desktop/NK/PNK_extended.thy",
+		"/C/Users/Stefan/Desktop/NK/NI_extended.thy",
+		"/C/Users/Stefan/Downloads/out.txt",
+		"/C/Users/Stefan/Desktop/NK/PNK_pure.thy",
+		"/C/Users/Stefan/Desktop/NK/PNK.thy",
+		"/C/Users/Stefan/Downloads/56a11d8d-4409-4dcd-baf2-f8aebf040034",
+		"/C/Users/Stefan/Downloads/aa68afef-2f41-4ba5-85d7-7ea0533226c1",
+		"/C/Users/Stefan/Desktop/test.txt",
+		"/C/Users/Stefan/Desktop/NK/NK.thy",
+		"/C/Users/Stefan/Desktop/audio_file.wav",
+		"/C/Users/Stefan/tex.stack/marginnote_test.tex",
+		"/C/Users/Stefan/Desktop/out.txt",
+		"/C/Users/Stefan/Desktop/Studium/Software Engineering/z_DuplicateKeyProblem.java.txt",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/workerpool/Listener.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/workerpool/Worker.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/queue/Worker.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/queue/JobQueue.java",
+		"/C/Users/Stefan/tex.stack/_minted-ernest/2EB22698F9C01791A863C1E72C5988341AB83116A69862CB352DF586019F932F.pygtex",
+		"/C/Users/Stefan/Downloads/f84eeb0c-c4c6-44dc-9202-00084f081333",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/Add.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/BinaryNode.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/PrintVisitor.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/SimplePrintVisitor.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/Visitor.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/Prototype/Brief.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/Prototype/Usage.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/Prototype/Vorlage.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/VisitorV0/FloatValue.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_DesignPattern.zip/DesignPattern/src/ObjectPool/ObjectPool.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp2_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/queue/TCPJobQueueServer.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp2_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/workerpool/Worker.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp2_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/workerpool/TCPServerWorkerPool.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp2_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/queue/Worker.java",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_ProcessView_TCP_Server.zip/ProcessView_Server_TCP/src/tcpserver/queue/Listener.java",
+		"/C/Users/Stefan/Desktop/crypto.txt",
+		"/C/Users/Stefan/tex.stack/temporary_file.pdf",
+		"/C/Users/Stefan/tex.stack/commons.pdf",
+		"/C/Users/Stefan/Desktop/extract",
+		"/C/Users/Stefan/tex.stack/hex.tex",
+		"/C/Users/Stefan/AppData/Roaming/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/C/Users/Stefan/Desktop/aladdin_cant_believe.wav",
+		"/C/Users/Stefan/tex.stack/tex.stack.sublime-project",
+		"/C/Users/Stefan/Desktop/HelpAndDoc/TheoryDropDown.howto.txt",
+		"/C/Users/Stefan/Desktop/HelpAndDoc/AnzeigemodusFuerRegeln.txt",
+		"/C/Users/Stefan/Desktop/NK/PNI_extended.thy",
+		"/C/Users/Stefan/Desktop/NK/PNI_pure.thy",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/imports/titlepage_2.tex",
+		"/C/Users/Stefan/tex.stack/double_env.tex",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_HelpAndDoc.zip/Isabelle/HelpAndDoc/MigrationToIsabelle2016.txt",
+		"/C/Users/Stefan/tex.stack/tikz_break.tex",
+		"/C/Users/Stefan/tex.stack/tikz_break.Rnw",
+		"/C/Program Files/R/R-3.3.1/bin/tikz_break-concordance.tex",
+		"/C/Program Files/R/R-3.3.1/bin/tikz_break.tex",
+		"/C/Users/Stefan/tex.stack/tikz_break.Rnw.tex",
+		"/C/Users/Stefan/tex.stack/arrows_in_plot.tex",
+		"/C/Users/Stefan/tex.stack/sa.tex",
+		"/C/Users/Stefan/tex.stack/beamer_pgf.tex",
+		"/C/Users/Stefan/tex.stack/arrows_in_plot.aux",
+		"/C/Users/Stefan/tex.stack/beamer_pgf.aux",
+		"/C/Users/Stefan/tex.stack/beamer_pgf.log",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/imports/tufte_def.tex",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/_minted-document/8C873D705B93E032A4B7ECC9A8167C28535A73E8B1F21F77B7EAB402320AB087.pygtex",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/document.log",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/document_tufte.tex",
+		"/C/Users/Stefan/Documents/tex.sqlinjection/imports/simple_def.tex",
+		"/C/Users/Stefan/Desktop/WriteMonkey/How to install.txt",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_wm2703.zip/How to install.txt",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_wm_localization_de-DE_270.zip/How to install.txt",
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_tkz-base.zip/tkz-base/latex/tkz/tkzbase/tkz-tools-base.tex"
+	],
+	"find":
+	{
+		"height": 24.0
+	},
+	"find_in_files":
+	{
+		"height": 105.0,
+		"where_history":
+		[
+			"*.tex,<open files>",
+			"*.tex",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"font",
+			"koma",
+			"page",
+			"startthread",
+			"BackColor",
+			"ticktick",
+			"constructor",
+			"hyperref",
+			"1.6",
+			"command{\\cite",
+			"cite",
+			"debug",
+			"\\end{listing}",
+			"\\begin{listing}",
+			"sourcecode",
+			"caption",
+			"sidenote",
+			"footnote{",
+			"footnote",
+			"defaultSubmitButton",
+			" ",
+			".. .. .. ..",
+			" ",
+			"f",
+			"1",
+			"f",
+			" ",
+			"f",
+			" ",
+			".. ",
+			" ",
+			".. ",
+			"\\n",
+			"[^\\n]{2}",
+			" ",
+			"\\n",
+			" ",
+			"\\n",
+			"(ff|00)$",
+			" ",
+			"DD",
+			"...",
+			"..",
+			"B.*Longright",
+			"B .* Longright",
+			"B \\<Longright",
+			"RedAdAbs",
+			"versuch",
+			"vorgehen",
+			"LaTeX Font Warning: Font shape",
+			"Very small head height",
+			"0",
+			"1",
+			"tkz@LabelX",
+			"tkzLabelX",
+			"@AxeX",
+			"tkzaxeX",
+			"tkzax",
+			"tkzAx",
+			"16132175.781250",
+			"\\n\\n",
+			"p",
+			"x",
+			"l",
+			"j",
+			"i",
+			"z",
+			"g",
+			"y",
+			"n",
+			"d",
+			"c",
+			"e",
+			"b",
+			"h",
+			"b",
+			"a",
+			"i",
+			"h",
+			"g",
+			"z",
+			"d",
+			"b",
+			"a",
+			"c",
+			"e",
+			" ",
+			"ppp",
+			"mmm",
+			"mpp",
+			"mfp",
+			" ",
+			"\\w{3}",
+			" ",
+			"mysql",
+			"hyper",
+			"424",
+			"zapf",
+			"modsec",
+			"minted",
+			"chapterHeaderSkip",
+			"logo",
+			"hyperr",
+			"hyper",
+			"\\d{90}",
+			"[012345678\\n]+",
+			"^\\n",
+			"\n\n\n",
+			" \n\n\n",
+			" ",
+			"        ",
+			"backref",
+			"bib",
+			"chapternumb",
+			"scshape",
+			"upper",
+			"%20",
+			"caption",
+			"mss",
+			"documentColor",
+			"table",
+			"documentc",
+			"chapterfo",
+			"\\d{33}",
+			"2",
+			"0",
+			"1",
+			" "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"1",
+			"0",
+			"",
+			"v",
+			"u",
+			"i",
+			"o",
+			"r",
+			"u",
+			"w",
+			"s",
+			"n",
+			"x",
+			"a",
+			"e",
+			"y",
+			"h",
+			"z",
+			"h",
+			"t",
+			"r",
+			"w",
+			"s",
+			"n",
+			"a",
+			"h",
+			"t",
+			"e",
+			"z",
+			"",
+			"e",
+			"d",
+			"c",
+			"b",
+			"",
+			"\n\n\n",
+			"",
+			"0",
+			"1",
+			"2",
+			"0",
+			"1",
+			"    ",
+			"0",
+			"1",
+			".",
+			"-",
+			".",
+			"Mitarbeitern",
+			"voneinander",
+			"",
+			":",
+			"venue_s",
+			"id",
+			"a_number",
+			"name",
+			"description",
+			"begin",
+			"end",
+			"gps",
+			"venue",
+			"",
+			"anhand",
+			"derselben",
+			"anhand",
+			";",
+			"item",
+			"",
+			" ",
+			"~",
+			"+",
+			"%",
+			"Ä",
+			"ü",
+			"e",
+			"'",
+			"/",
+			"Ö",
+			",",
+			"\"",
+			";",
+			"#",
+			"&",
+			"ü",
+			"ß",
+			"ö",
+			"ä",
+			" ",
+			"~",
+			"",
+			"\\t"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 24.0
+	},
+	"input":
+	{
+		"height": 38.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 172.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"output.latextools":
+	{
+		"height": 223.0
+	},
+	"pinned_build_system": "",
+	"project": "tex.uggedal.sublime-project",
+	"replace":
+	{
+		"height": 44.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"ernest",
+				"ernest.tex"
+			],
+			[
+				"ernesttex",
+				"ernest.tex"
+			],
+			[
+				"deftex",
+				"imports\\def.tex"
+			],
+			[
+				"titlepagetex",
+				"imports\\titlepage_2.tex"
+			],
+			[
+				"document",
+				"document.tex"
+			],
+			[
+				"docu",
+				"document.tex"
+			],
+			[
+				"luatex",
+				"imports\\def_lua.tex"
+			],
+			[
+				"deflua",
+				"imports\\def_lua.tex"
+			],
+			[
+				"create",
+				"imports\\creative_commons.tex"
+			],
+			[
+				"def",
+				"imports\\def.tex"
+			],
+			[
+				"imp",
+				"imports\\def.tex"
+			],
+			[
+				"importdef",
+				"imports\\def.tex"
+			],
+			[
+				"import",
+				"imports\\titlepage.tex"
+			],
+			[
+				"semdef",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"seminar",
+				"seminar.tex"
+			],
+			[
+				"ssq",
+				"imports\\ssq_def.tex"
+			],
+			[
+				"semindef",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"ssqdef",
+				"imports\\ssq_def.tex"
+			],
+			[
+				"stackte",
+				"stack.tex"
+			],
+			[
+				"wrap",
+				"booklet_wrapper.tex"
+			],
+			[
+				"ssqtex",
+				"ssq.tex"
+			],
+			[
+				"smedef",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"semtex",
+				"seminar.tex"
+			],
+			[
+				"stacktex",
+				"stack.tex"
+			],
+			[
+				"seminardef",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"test",
+				"test.tex"
+			],
+			[
+				"sedef",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"log",
+				"seminar.log"
+			],
+			[
+				"beamer",
+				"seminar_beamer.sublime-project"
+			],
+			[
+				"seminarte",
+				"seminar.tex"
+			],
+			[
+				"bib",
+				"imports\\references_seminar.bib"
+			],
+			[
+				"seminar_def",
+				"imports\\seminar_def.tex"
+			],
+			[
+				"poly",
+				"chapter\\polyglott.tex"
+			],
+			[
+				"req",
+				"chapter\\requirements.tex"
+			],
+			[
+				"re",
+				"chapter\\reevent.tex"
+			],
+			[
+				"dev",
+				"config\\development.tex"
+			],
+			[
+				"conclusion",
+				"chapter\\conclusion.tex"
+			],
+			[
+				"testdef",
+				"chapter\\test_definition.tex"
+			],
+			[
+				"refer",
+				"resource\\reference\\references.bib"
+			],
+			[
+				"first",
+				"chapter\\first_pages.tex"
+			],
+			[
+				"lastpat",
+				"chapter\\last_pages.tex"
+			],
+			[
+				"ref",
+				"resource\\reference\\references.bib"
+			],
+			[
+				"referer",
+				"resource\\reference\\references.bib"
+			],
+			[
+				"reser",
+				"resource\\SearchResults.txt"
+			],
+			[
+				"makro",
+				"config\\makro.tex"
+			],
+			[
+				"gloass",
+				"config\\glossaries.tex"
+			],
+			[
+				"requi",
+				"chapter\\requirements.tex"
+			],
+			[
+				"comm",
+				"config\\common.tex"
+			],
+			[
+				"listings",
+				"config\\listings.tex"
+			],
+			[
+				"lsit",
+				"config\\listings.tex"
+			],
+			[
+				"last",
+				"chapter\\last_pages.tex"
+			],
+			[
+				"common",
+				"config\\common.tex"
+			],
+			[
+				"doc",
+				"document.tex"
+			],
+			[
+				"mark",
+				"chapter\\market.tex"
+			],
+			[
+				"deve",
+				"config\\development.tex"
+			],
+			[
+				"conc",
+				"chapter\\conclusion.tex"
+			],
+			[
+				"prefa",
+				"chapter\\preface.tex"
+			],
+			[
+				"conclus",
+				"chapter\\conclusion.tex"
+			],
+			[
+				"eval",
+				"chapter\\eval.tex"
+			],
+			[
+				"chh",
+				"chapter\\choose.tex"
+			],
+			[
+				"market",
+				"chapter\\market.tex"
+			],
+			[
+				"de",
+				"config\\development.tex"
+			],
+			[
+				"require",
+				"chapter\\requirements.tex"
+			],
+			[
+				"reeve",
+				"chapter\\reevent.tex"
+			],
+			[
+				"intro",
+				"chapter\\introduction.tex"
+			],
+			[
+				"pref",
+				"chapter\\preface.tex"
+			],
+			[
+				"fi",
+				"chapter\\first_pages.tex"
+			],
+			[
+				"ab",
+				"chapter\\abstract.tex"
+			],
+			[
+				"reevent",
+				"chapter\\reevent.tex"
+			],
+			[
+				"gra",
+				"config\\graphics.tex"
+			],
+			[
+				"testresults",
+				"chapter\\test_results.tex"
+			],
+			[
+				"tet",
+				"chapter\\test_definition.tex"
+			],
+			[
+				"reevet",
+				"chapter\\reevent.tex"
+			],
+			[
+				"tab",
+				"config\\tabular.tex"
+			],
+			[
+				"testresl",
+				"chapter\\test_results.tex"
+			],
+			[
+				"testresul",
+				"chapter\\test_results.tex"
+			],
+			[
+				"conl",
+				"chapter\\conclusion.tex"
+			],
+			[
+				"abst",
+				"chapter\\abstract.tex"
+			],
+			[
+				"abstra",
+				"chapter\\abstract.tex"
+			],
+			[
+				"gloss",
+				"config\\glossaries.tex"
+			],
+			[
+				"con",
+				"chapter\\conclusion.tex"
+			],
+			[
+				"pages",
+				"config\\pagestyle.tex"
+			],
+			[
+				"omm",
+				"config\\common.tex"
+			],
+			[
+				"absta",
+				"chapter\\abstract.tex"
+			],
+			[
+				"tetsdef",
+				"chapter\\test_definition.tex"
+			],
+			[
+				"devel",
+				"config\\development.tex"
+			],
+			[
+				"pre",
+				"chapter\\preface.tex"
+			],
+			[
+				"mar",
+				"chapter\\market.tex"
+			],
+			[
+				"chos",
+				"chapter\\choose.tex"
+			],
+			[
+				"reven",
+				"resource\\image\\screenshot_ingolstadt_filter_events.svg"
+			],
+			[
+				"do",
+				"document.tex"
+			],
+			[
+				"requirements",
+				"chapter\\requirements.tex"
+			],
+			[
+				"lastpa",
+				"chapter\\last_pages.tex"
+			],
+			[
+				"requirem",
+				"chapter\\requirements.tex"
+			],
+			[
+				"dv",
+				"config\\development.tex"
+			],
+			[
+				"reeven",
+				"chapter\\reevent.tex"
+			],
+			[
+				"title",
+				"chapter\\title.tex"
+			],
+			[
+				"mak",
+				"make.bat"
+			],
+			[
+				"commde",
+				"config\\common_dev.tex"
+			],
+			[
+				"coomm",
+				"config\\common.tex"
+			],
+			[
+				"d",
+				"document.tex"
+			],
+			[
+				"pol",
+				"chapter\\polyglott.tex"
+			],
+			[
+				"chapter/firs",
+				"chapter\\first_pages.tex"
+			],
+			[
+				"testlog",
+				"test.log"
+			],
+			[
+				"abs",
+				"chapter\\abstract.tex"
+			],
+			[
+				"fir",
+				"chapter\\first_pages.tex"
+			],
+			[
+				"resouimagetiklog",
+				"resource\\image\\tikz\\document-figure0.log"
+			],
+			[
+				"gloas",
+				"config\\glossaries.tex"
+			],
+			[
+				"lis",
+				"config\\listings.tex"
+			],
+			[
+				"ol",
+				"chapter\\polyglott.tex"
+			],
+			[
+				"grap",
+				"config\\graphics.tex"
+			],
+			[
+				"page",
+				"config\\pagestyle.tex"
+			],
+			[
+				"pg",
+				"config\\pagestyle.tex"
+			],
+			[
+				"pge",
+				"config\\pagestyle.tex"
+			],
+			[
+				"requir",
+				"chapter\\requirements.tex"
+			],
+			[
+				"documenttex",
+				"document.tex"
+			],
+			[
+				"testtex",
+				"test.tex"
+			],
+			[
+				"docutex",
+				"document.tex"
+			],
+			[
+				"ree",
+				"chapter\\reevent.tex"
+			],
+			[
+				"pagest",
+				"document\\config\\pagestyle.tex"
+			],
+			[
+				"confdoc",
+				"document\\config\\document.tex"
+			],
+			[
+				"neo",
+				"document\\chapter\\neo4j.tex"
+			],
+			[
+				"cat_attribute",
+				"document\\resource\\latex\\cat_attribute.tex"
+			],
+			[
+				"confdocument",
+				"document\\config\\document.tex"
+			],
+			[
+				"jq",
+				"document\\chapter\\jqassistant.tex"
+			],
+			[
+				"tabul",
+				"document\\config\\tabular.tex"
+			],
+			[
+				"cat_method",
+				"document\\resource\\latex\\cat_method.tex"
+			],
+			[
+				"cat_class_node",
+				"document\\resource\\latex\\cat_class_node.tex"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\Users\\Stefan\\AppData\\Roaming\\Sublime Text 3\\Packages\\User\\Projects\\Seminar_Beamer.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 195.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
