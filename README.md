@@ -1,7 +1,5 @@
 uggedal-thesis
 ==============
 
-This repository is simply a github mirror of http://bitbucket.org/uggedal/thesis
-It's a beautiful example of LaTeX typesetting of a book-like document.
-
-To see what it looks like, see [Resulting PDF](https://github.com/dergachev/uggedal-thesis/raw/master/uggedal.pdf).
+This repository contains a version of Eivind Uggedals thesis template, that is actually compilable with LuaLatex.
+It requires the Minion Pro font.
