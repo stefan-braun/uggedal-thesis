@@ -135,6 +135,30 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "uiothesis.cls",
+			"settings":
+			{
+				"buffer_size": 16160,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "base.tex",
+			"settings":
+			{
+				"buffer_size": 3106,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/c/texlive/2016/texmf-dist/tex/latex/mcaption/mcaption.sty",
+			"settings":
+			{
+				"buffer_size": 4476,
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -143,10 +167,18 @@
 	"build_varint": "",
 	"command_palette":
 	{
-		"height": 400.0,
-		"last_filter": "",
+		"height": 263.0,
+		"last_filter": "git comm",
 		"selected_items":
 		[
+			[
+				"git comm",
+				"Git: Commit"
+			],
+			[
+				"git",
+				"Git: Add All"
+			],
 			[
 				"list",
 				"Package Control: List Packages"
@@ -166,10 +198,6 @@
 			[
 				"com",
 				"Git: Commit"
-			],
-			[
-				"git",
-				"Git: Add All"
 			],
 			[
 				"git commit",
@@ -304,6 +332,8 @@
 	],
 	"file_history":
 	[
+		"/C/Users/Stefan/Documents/tex.uggedal/tex.uggedal.sublime-project",
+		"/C/Users/Stefan/Documents/tex.uggedal/base.tex",
 		"/C/Users/Stefan/Downloads/classicthesis.sty",
 		"/C/Users/Stefan/test.html",
 		"/C/Users/Stefan/AppData/Local/Studio_pomaranča_d.o.o__O/WriteMonkey.exe_Url_omj5dlw2zenrpbjtg40fcwryu5p23qfg/2.7.0.3/user.config",
@@ -429,13 +459,11 @@
 		"/C/Users/Stefan/Documents/tex.sqlinjection/document_tufte.tex",
 		"/C/Users/Stefan/Documents/tex.sqlinjection/imports/simple_def.tex",
 		"/C/Users/Stefan/Desktop/WriteMonkey/How to install.txt",
-		"/C/Users/Stefan/AppData/Local/Temp/Temp1_wm2703.zip/How to install.txt",
-		"/C/Users/Stefan/AppData/Local/Temp/Temp1_wm_localization_de-DE_270.zip/How to install.txt",
-		"/C/Users/Stefan/AppData/Local/Temp/Temp1_tkz-base.zip/tkz-base/latex/tkz/tkzbase/tkz-tools-base.tex"
+		"/C/Users/Stefan/AppData/Local/Temp/Temp1_wm2703.zip/How to install.txt"
 	],
 	"find":
 	{
-		"height": 24.0
+		"height": 36.0
 	},
 	"find_in_files":
 	{
@@ -452,6 +480,7 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"margin",
 			"font",
 			"koma",
 			"page",
@@ -578,8 +607,7 @@
 			"\\d{33}",
 			"2",
 			"0",
-			"1",
-			" "
+			"1"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -688,8 +716,102 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "uiothesis.cls",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16160,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								363,
+								363
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/LaTeX/TeX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "base.tex",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3106,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								321,
+								321
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/LaTeX/LaTeX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/c/texlive/2016/texmf-dist/tex/latex/mcaption/mcaption.sty",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 4476,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								784,
+								820
+							]
+						],
+						"settings":
+						{
+							"side_bar_folders_auto_load_folder": 1,
+							"syntax": "Packages/LaTeX/TeX.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 434.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -732,9 +854,13 @@
 	{
 		"height": 0.0
 	},
+	"output.git":
+	{
+		"height": 104.0
+	},
 	"output.latextools":
 	{
-		"height": 223.0
+		"height": 221.0
 	},
 	"pinned_build_system": "",
 	"project": "tex.uggedal.sublime-project",

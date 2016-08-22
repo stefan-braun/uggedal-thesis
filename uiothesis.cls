@@ -9,7 +9,13 @@
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{memoir}}
 \ProcessOptions
 \LoadClass{memoir}
+\PassOptionsToPackage{strict}{changepage}
 
+\RequirePackage{ifluatex}
+
+\ifluatex
+\else
+\PackageError{uiothesis}{The uiothesis class requires luatex}{}\stop\fi
 
 %%
 %% Fixes
@@ -313,6 +319,7 @@
 %%
 
 \RequirePackage{marginnote}
+\RequirePackage{mcaption}
 
 % The mark on the sidenote
 \newcommand{\sidemark}[1]{#1.{\:}}
@@ -676,8 +683,8 @@
   \pagestyle{empty}
   \raggedright\small
 
-  \null\vfil
-  \begin{adjustwidth*}{\unitlength}{-\unitlength}
+  \null\vfill
+  \begin{adjustwidth*}{0.2\paperwidth}{-0.2\paperwidth}
     This thesis was typeset using the \LaTeX{} typesetting\\
     system originally developed by Leslie Lamport,\\
     based on \TeX{} created by Donald Knuth.\\
@@ -706,20 +713,19 @@
 
     \bigskip
 
-    The guidelines found in \work{The Visual Display of\\
-    Quantitative Information} by Tufte\,(2001) were\\
-    followed when creating diagrams and tables.\\
-    Colors used in diagrams and figures were inspired\\
-    by the \work{Summer Fields} color scheme found at\\
-    \url{http://www.colourlovers.com/palette/399372}\\
-  \end{adjustwidth*}
+    The template for this paper was designed and\\
+    created by Eivind Uggedal for his thesis\\
+    on \work{Social Navigation on the Social Web} (2008),\\
+    released into public domain at \url{https://uggedal.com}.
 
-  \vfil
-  \begin{adjustwidth*}{\unitlength}{-\unitlength}
+
+  \end{adjustwidth*}
+  \bigskip
+  \begin{adjustwidth*}{0.2\paperwidth}{-0.2\paperwidth}
     \color{largeornament}\fourierOrnament{100}{120}{97}
   \end{adjustwidth*}
+  \vfill
 
-  \vfil
 
   %\metainfo
 }
@@ -732,51 +738,3 @@
   The beselineskip is: \the\baselineskip{}
 }
 
-% Titlepage
-\RequirePackage{pdfpages}
-\renewcommand{\maketitle}{%
-  \begin{titlingpage}
-    \begin{centered}
-        \null\vspace{8pc}
-
-        {\Huge\color{title}\uppercaps{Reverse Engineering}} \\
-        \vspace{2pc}
-        {\Huge\textit{{mit}}} \\
-        \vspace{2pc}
-        {\Huge\color{title}\uppercaps{IDA PRO}} \\
-
-        \vspace{4pc}
-        {\Large\aldineleft} \\
-        \vspace{4pc}
-
-        {\Large\textit{{
-          Debuggung, Disassembling \\
-          \vspace{1pc}
-          und Decompiling von Objective-C}}} \\
-
-        \vspace{5pc}
-
-        {\large\@author} \\
-
-        \vspace{2pc}
-
-        {\large August 2017} \\
-
-        \vspace{5pc}
-
-        \textit{
-        Masterarbeit\\
-        \vspace{1pc}
-        an der \\
-        \vspace{1pc}
-        TH Ingolstadt \\
-        Fakultät Elektrotechnik und Informatik \\
-        betreut von Prof. Dr. Stefan Hahndel \\
-        }
-        \vfill
-        \@scm
-    \end{centered}
-    \clearpage
-    %\makecolophon
-  \end{titlingpage}
-}
